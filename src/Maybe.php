@@ -1,10 +1,9 @@
 <?php
-declare(strict_types=1);
 
 namespace PhpFp\Maybe;
 
-use PhpFp\Maybe\Constructor\{Just, Nothing};
-
+use PhpFp\Maybe\Constructor\Just;
+use PhpFp\Maybe\Constructor\Nothing;
 /**
  * An OO-looking implementation of Maybe in PHP.
  */
@@ -15,20 +14,18 @@ abstract class Maybe
      * @param mixed $x The value to be wrapped.
      * @return A new Just-constructed value.
      */
-    final public static function just($x) : Just
+    public static final function just($x)
     {
         return new Just($x);
     }
-
     /**
      * Construct a new Nothing instance.
      * @return A new Nothing-constructed value.
      */
-    final public static function nothing() : Nothing
+    public static final function nothing()
     {
         return new Nothing();
     }
-
     /**
      * Similar to `of` or `just`, save the fact that
      * `null` values are mapped to `Nothing` instead.
@@ -37,72 +34,62 @@ abstract class Maybe
      * @param mixed $x The value to be wrapped.
      * @return A new Maybe-wrapped value.
      */
-    final public static function fromNullable($x) : Maybe
+    public static final function fromNullable($x)
     {
-        return isset($x)
-          ? Maybe::just($x)
-          : Maybe::nothing();
+        return isset($x) ? Maybe::just($x) : Maybe::nothing();
     }
-
     /**
      * Applicative constructor for Maybe.
      * @param mixed $x The value to be wrapped.
      * @return A new Just-constructed value.
      */
-    final public static function of($x) : Maybe
+    public static final function of($x)
     {
         return self::just($x);
     }
-
     /**
      * Application, derived with chain.
      * @param Maybe $that The wrapped parameter.
      * @return Maybe The wrapped result.
      */
-    abstract public function ap(Maybe $that) : Maybe;
-
+    public abstract function ap(Maybe $that);
     /**
      * Semigroup concatenation of two Maybe values.
      * @param Maybe $that Inner types must match!
      * @return Maybe The concatenated value.
      * @todo Make friendly with primitives.
      */
-    abstract public function concat(Maybe $that) : Maybe;
-
+    public abstract function concat(Maybe $that);
     /**
      * PHP implemenattion of Haskell Maybe's >>=.
      * @param callable $f a -> Maybe b
      * @return Maybe The result of the function.
      */
-    abstract public function chain(callable $f) : Maybe;
-
+    public abstract function chain(callable $f);
     /**
      * Check whether two Maybe values be equal.
      * @param Maybe $that Inner types should match!
      * @return bool
      * @todo Make this compatible with setoid inner values.
      */
-    abstract public function equals(Maybe $that) : bool;
-
+    public abstract function equals(Maybe $that);
     /**
      * Fork this Maybe, with a default for Nothing.
      * @param mixed $default In case of Nothing.
      * @return mixed Whatever the Maybe's inner type is.
      */
-    abstract public function fork($default);
-
+    public abstract function fork($default);
     /**
      * Functor map, derived from chain.
      * @param callable $f The mapping function.
      * @return Maybe The outer structure is preserved.
      */
-    abstract public function map(callable $f) : Maybe;
-
+    public abstract function map(callable $f);
     /**
      * Left fold / reduction for Maybe.
      * @param callable $f The folding function.
      * @param mixed $x The accumulator value.
      * @return mixed The $x type and $f return type.
      */
-    abstract public function reduce(callable $f, $x);
+    public abstract function reduce(callable $f, $x);
 }
