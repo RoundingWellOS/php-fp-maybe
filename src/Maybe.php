@@ -45,15 +45,6 @@ abstract class Maybe
     }
 
     /**
-     * Empty value for the monoid definition.
-     * @return A new Nothing-constructed value.
-     */
-    final public static function empty() : Maybe
-    {
-        return self::nothing();
-    }
-
-    /**
      * Applicative constructor for Maybe.
      * @param mixed $x The value to be wrapped.
      * @return A new Just-constructed value.
